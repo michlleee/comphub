@@ -25,7 +25,7 @@ const generateTokens = (user) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { username, email, password, role } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser)
@@ -33,7 +33,7 @@ export const registerUser = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new User({
-      name: name,
+      username: username,
       email: email,
       password: hashPassword,
       role: role || "user",

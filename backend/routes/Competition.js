@@ -1,7 +1,10 @@
 import express from "express";
-import { addCompetition } from "../controller/Competition";
-import { authMiddleware } from "../middleware/Auth";
-import { authorizedRolesMiddleware } from "../middleware/AuthorizedRoles";
+import {
+  addCompetition,
+  getAllCompetitions,
+} from "../controller/Competition.js";
+import { authMiddleware } from "../middleware/Auth.js";
+import { authorizedRolesMiddleware } from "../middleware/AuthorizedRoles.js";
 
 const router = express.Router();
 
@@ -10,6 +13,13 @@ router.post(
   authMiddleware,
   authorizedRolesMiddleware("admin"),
   addCompetition
+);
+
+router.get(
+  "/all",
+  authMiddleware,
+  authorizedRolesMiddleware("admin"),
+  getAllCompetitions
 );
 
 export default router;
