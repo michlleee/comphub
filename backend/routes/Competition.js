@@ -1,7 +1,9 @@
 import express from "express";
 import {
   addCompetition,
+  deleteCompetition,
   getAllCompetitions,
+  getSingleCompetition,
 } from "../controller/Competition.js";
 import { authMiddleware } from "../middleware/Auth.js";
 import { authorizedRolesMiddleware } from "../middleware/AuthorizedRoles.js";
@@ -15,11 +17,15 @@ router.post(
   addCompetition
 );
 
-router.get(
-  "/all",
+router.get("/all", authMiddleware, getAllCompetitions);
+
+router.get("/:slug", authMiddleware, getSingleCompetition);
+
+router.delete(
+  "/:id",
   authMiddleware,
   authorizedRolesMiddleware("admin"),
-  getAllCompetitions
+  deleteCompetition
 );
 
 export default router;

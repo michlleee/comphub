@@ -22,7 +22,7 @@ export const authMiddleware = async (req, res, next) => {
     try {
       decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     } catch (error) {
-      if (err.name === "TokenExpiredError") {
+      if (error.name === "TokenExpiredError") {
         return res.status(401).json({ message: "Access token expired" });
       }
       return res.status(401).json({ message: "Invalid access token" });

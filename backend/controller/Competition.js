@@ -42,3 +42,37 @@ export const getAllCompetitions = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getSingleCompetition = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const foundComp = await Competition.findOne({ slug: slug });
+
+    if (!foundComp) {
+      return res.status(404).json({ message: "Competition not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Competition found", competition: foundComp });
+  } catch (error) {
+    console.log("error ini getting competition by slug: ", error);
+    res.status(500).json({ message: "error in fetching competition" });
+  }
+};
+
+export const deleteCompetition = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Competition.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Competition not found" });
+    }
+
+    res.status(200).json({ message: "deletion successful" });
+  } catch (error) {
+    console.log("error in deleteing competition: ", error);
+    res.status(500).json({ message: "error in deleteing competition" });
+  }
+};
