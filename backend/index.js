@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/Auth.js";
+import competitionRouter from "./routes/Competition.js";
 dotenv.config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/competition", competitionRouter);
 
 const startServer = async () => {
   try {
