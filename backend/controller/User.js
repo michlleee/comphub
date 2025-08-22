@@ -8,7 +8,7 @@ export const saveComp = async (req, res) => {
 
     const { slug } = req.params;
     if (!slug)
-      return res.status(404).json({ message: "competition id not found" });
+      return res.status(404).json({ message: "competition not found" });
 
     const exist = await Competition.findOne({ slug: slug });
     if (!exist)
