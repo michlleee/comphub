@@ -11,6 +11,22 @@
   --foreground: white;
 }
 
+/* @keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 30s ease infinite;
+} */
+
 :root {
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
