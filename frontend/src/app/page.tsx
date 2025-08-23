@@ -37,7 +37,7 @@ export default function LandingPage() {
               <Link href="/login">Login</Link>
             </Button>
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/register">Register</Link>
+              <Link href="/register">Sign up</Link>
             </Button>
           </div>
         </div>

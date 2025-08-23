@@ -1,31 +1,36 @@
-import { RegisterForm } from "@/components/regis-form";
+import { RegisterForm } from "@/components/RegisForm";
+import { Code } from "lucide-react";
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
-      <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
-      <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-primary/20 rounded-full blur-md"></div>
+    <div className="min-h-screen flex">
+      <div className="flex-1 flex flex-col justify-center items-center px-8 py-6 text-white relative overflow-hidden bg-gradient-to-br from-black via-gray-950 to-gray-900">
+        <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-primary/10 blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-primary/10 blur-2xl"></div>
 
-      {/* Additional floating circles */}
-      <div className="absolute top-10 right-10 w-28 h-28 bg-primary/10 rounded-full blur-2xl animate-pulse"></div>
-      <div className="absolute bottom-20 left-20 w-20 h-20 bg-primary/15 rounded-full blur-lg animate-bounce"></div>
-
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="h-full w-full bg-[radial-gradient(circle_at_1px_1px,_rgba(255,255,255,0.3)_1px,_transparent_0)] bg-[size:20px_20px]"></div>
+        <div className="max-w-lg text-center relative z-10 p-6 rounded-2xl border border-white/10 backdrop-blur-sm bg-white/5 shadow-lg">
+          <h1 className="text-5xl font-bold mb-4 text-primary">
+            Join the Competition Hub
+          </h1>
+          <p className="text-gray-300 mb-6 text-lg">
+            Find, track, and stay updated on the latest CS competitions. Never
+            miss a registration deadline again.
+          </p>
+        </div>
       </div>
 
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/3 w-40 h-40 bg-gradient-to-r from-primary/20 to-transparent rounded-full blur-2xl animate-pulse"></div>
-      <div className="absolute bottom-1/4 right-1/3 w-36 h-36 bg-gradient-to-l from-primary/15 to-transparent rounded-full blur-xl"></div>
-      <div className="absolute top-1 right-1 w-30 h-30 bg-gradient-to-r from-primary/40 to-transparent rounded-full blur-2xl animate-pulse"></div>
+      <div className="relative flex items-center justify-center">
+        <div className="w-px h-full bg-gradient-to-b from-transparent via-primary/20 to-transparent"></div>
 
-      {/* More gradient orbs */}
-      <div className="absolute top-2/3 left-1/4 w-32 h-32 bg-gradient-to-r from-primary/15 to-transparent rounded-full blur-2xl animate-pulse"></div>
-      <div className="absolute bottom-1/2 right-1/5 w-28 h-28 bg-gradient-to-l from-primary/10 to-transparent rounded-full blur-xl animate-bounce"></div>
+        <div className="absolute bg-black p-2 rounded-full shadow-lg border border-white/10">
+          <Code className="w-8 h-8 text-primary" />
+        </div>
+      </div>
 
-      <div className="w-full max-w-md relative z-10">
-        <RegisterForm />
+      <div className="flex-1 flex items-center justify-center px-8 py-6 bg-gradient-to-br from-black via-gray-950 to-gray-900">
+        <div className="w-full max-w-md p-8 rounded-2xl border border-white/10 backdrop-blur-sm bg-white/5 shadow-lg">
+          <RegisterForm />
+        </div>
       </div>
     </div>
   );
