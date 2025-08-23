@@ -7,8 +7,12 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import api from "@/api/axios";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 export function RegisterForm() {
+  const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -55,11 +59,32 @@ export function RegisterForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Registration data:", formData);
-      // Handle registration logic here
+      try {
+        const { data } = await api.post(
+          `${backendURL}/api/auth/register`,
+          {
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          },
+          { withCredentials: true }
+        );
+
+        localStorage.setItem("accessToken", data.accessToken);
+        toast.success("Signup successful! Redirecting...");
+
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1500);
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        const errorMsg =
+          error.response?.data?.message || "Login failed. Please try again.";
+        toast.error(errorMsg);
+      }
     }
   };
 

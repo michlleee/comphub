@@ -85,17 +85,25 @@ export const getAllSavedComp = async (req, res) => {
 
     const result = await User.findById(userId)
       .select("_id username savedCompetitions")
-      .populate("savedCompetitions", "title slug deadline");
+      .populate("savedCompetitions", "_id title slug deadline");
 
     if (!result) {
       return res.status(404).json({ message: "user not found in database" });
     }
 
-    const { savedCompetitions, username, _id } = result;
+    const { username, _id } = result;
+    const savedCompetitions = result.savedCompetitions.map((comp) => ({
+      _id: comp._id.toString(),
+      title: comp.title,
+      slug: comp.slug,
+      deadline: comp.deadline,
+    }));
+
+    // console.log(savedCompetitions);
 
     res.status(200).json({
       message: "Successfully retrived all saved competitions",
-      id: _id,
+      id: _id.toString(),
       username: username,
       savedComp: savedCompetitions,
     });

@@ -34,10 +34,10 @@ export default function LandingPage() {
               variant="ghost"
               className="text-foreground hover:text-primary"
             >
-              <Link href="/login">Login</Link>
+              <Link href="/login">Sign in</Link>
             </Button>
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/register">Sign up</Link>
+              <Link href="/signup">Sign up</Link>
             </Button>
           </div>
         </div>

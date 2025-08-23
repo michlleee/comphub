@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,17 +10,44 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import api from "@/api/axios";
+import { AxiosError } from "axios";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", { email, password });
+    try {
+      const { data } = await api.post(
+        `${backendURL}/api/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+
+      localStorage.setItem("accessToken", data.accessToken);
+
+      toast.success("Login successful! Redirecting...");
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1500);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const errorMsg =
+        error.response?.data?.message || "Login failed. Please try again.";
+      toast.error(errorMsg);
+    }
   };
 
   return (
@@ -131,10 +158,10 @@ export function LoginForm() {
         <div className="mt-3 text-sm text-center text-gray-300">
           Don't have an account?{" "}
           <Link
-            href="/register"
+            href="/signup"
             className="text-primary hover:underline font-medium"
           >
-            Sign in →
+            Sign up →
           </Link>
         </div>
       </CardContent>
