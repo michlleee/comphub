@@ -2,14 +2,14 @@
 
 CompHub is a web platform where users can explore the latest Computer Science–related competitions, save their favorites, and track registration deadlines. The project is still in progress, with a focus on building a reliable competition tracker for students and enthusiasts.  
 
-## 🚀 Features  
+## Features  
 - Browse the latest CS competitions  
 - Save and manage favorite competitions  
 - Track upcoming deadlines to never miss an opportunity  
 - User authentication with JWT  
 - SEO optimization with dynamic metadata  
 
-## 🛠️ Tech Stack  
+## Tech Stack  
 **Frontend**  
 - Next.js  
 - Tailwind css
