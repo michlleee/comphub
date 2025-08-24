@@ -13,6 +13,7 @@ CompHub is a web platform where users can explore the latest Computer Science–
 **Frontend**  
 - Next.js  
 - Tailwind css
+- Shadcn UI
 
 **Backend**  
 - Node.js with Express  
