@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     siteName: "CompHub",
     images: [
       {
-        url: "http://localhost:3000/login/og-image.png",
+        url: "/code-icon-brackets.png",
         width: 1200,
         height: 630,
       },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Sign in - CompHub",
     description:
       "Sign in to access your CompHub account and stay updated on the latest CS competitions.",
-    images: ["http://localhost:3000/login/og-image.png"],
+    images: ["/code-icon-brackets.png"],
   },
 };
 

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Code angle brackets logo">
+  <!-- Background rounded square -->
+  <rect x="8" y="8" width="240" height="240" rx="36" fill="#4FB3C1"/>
+  
+  <!-- Left angle bracket "<" -->
+  <line x1="110" y1="84" x2="80" y2="128" stroke="#0A0A0A" stroke-width="18" stroke-linecap="round"/>
+  <line x1="80" y1="128" x2="110" y2="172" stroke="#0A0A0A" stroke-width="18" stroke-linecap="round"/>
+  
+  <!-- Right angle bracket ">" -->
+  <line x1="146" y1="84" x2="176" y2="128" stroke="#0A0A0A" stroke-width="18" stroke-linecap="round"/>
+  <line x1="176" y1="128" x2="146" y2="172" stroke="#0A0A0A" stroke-width="18" stroke-linecap="round"/>
+</svg>

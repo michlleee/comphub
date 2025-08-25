@@ -13,6 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="icon" href="/code-icon-brackets.png" />
+      </head>
       <body>
         {children} <Toaster richColors position="top-center" />
       </body>

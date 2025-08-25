@@ -11,9 +11,12 @@ import {
 } from "lucide-react";
 import api from "@/api/axios";
 import { useEffect, useState } from "react";
+import SaveBtn from "@/components/SaveBtn";
 
 type Competition = {
+  _id: string;
   title: string;
+  slug: string;
   shortDesc: string;
   description: string;
   category: string;
@@ -105,7 +108,7 @@ export default function CompData({ slug }: { slug: string }) {
               <span>{competition.location}</span>
             </div>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 flex items-center gap-4">
             <a
               href={competition.registrationLink}
               target="_blank"
@@ -115,6 +118,11 @@ export default function CompData({ slug }: { slug: string }) {
               <LinkIcon className="w-5 h-5" />
               Register Now
             </a>
+
+            <SaveBtn
+              comp={{ _id: competition._id, slug: competition.slug }}
+              isSaved={false}
+            />
           </div>
         </div>
       </div>
