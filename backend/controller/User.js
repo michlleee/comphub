@@ -48,28 +48,28 @@ export const removeSavedComp = async (req, res) => {
     if (!exist)
       return res.status(404).json({ message: "competition does not exist" });
 
-    const existInArray = await User.findOne({
-      _id: userId,
-      savedCompetitions: exist._id,
-    });
-    if (!existInArray)
+    const user = await User.findById(userId);
+    if (!user) return res.status(401).json({ message: "user not found" });
+
+    if (!user.savedCompetitions.includes(exist._id.toString())) {
       return res
         .status(400)
-        .json({ message: "competition does not exist in saved collection" });
+        .json({ message: "competition not in saved collection" });
+    }
 
-    const result = await User.findByIdAndUpdate(
-      { _id: userId },
-      { $pull: { savedCompetitions: exist._id } },
-      { new: true }
+    user.savedCompetitions = user.savedCompetitions.filter(
+      (id) => id !== exist._id.toString()
     );
+
+    await user.save();
 
     res.status(200).json({
       message: "Successfully removed competition from saved collection",
       updatedUser: {
-        _id: result._id,
-        username: result.username,
-        role: result.role,
-        savedCompetitions: result.savedCompetitions,
+        _id: user._id,
+        username: user.username,
+        role: user.role,
+        savedCompetitions: user.savedCompetitions,
       },
     });
   } catch (error) {
@@ -85,7 +85,10 @@ export const getAllSavedComp = async (req, res) => {
 
     const result = await User.findById(userId)
       .select("_id username savedCompetitions")
-      .populate("savedCompetitions", "_id title slug deadline");
+      .populate(
+        "savedCompetitions",
+        "_id title slug registrationOpen registrationClose"
+      );
 
     if (!result) {
       return res.status(404).json({ message: "user not found in database" });
@@ -96,7 +99,8 @@ export const getAllSavedComp = async (req, res) => {
       _id: comp._id.toString(),
       title: comp.title,
       slug: comp.slug,
-      deadline: comp.deadline,
+      regisOpen: comp.registrationOpen,
+      regisClose: comp.registrationClose,
     }));
 
     // console.log(savedCompetitions);

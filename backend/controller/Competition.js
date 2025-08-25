@@ -3,30 +3,51 @@ import slugify from "slugify";
 
 export const addCompetition = async (req, res) => {
   try {
-    const { title, description, category, deadline, registrationLink } =
-      req.body;
+    const {
+      title,
+      shortDesc,
+      description,
+      category,
+      topic,
+      registrationOpen,
+      registrationClose,
+      eventDate,
+      registrationLink,
+      organizer,
+      prize,
+      location,
+    } = req.body;
 
     const adminId = req.user._id;
+
     const slug = slugify(title, { lower: true, strict: true });
+
     const newComp = new Competition({
       title,
       slug,
+      shortDesc,
       description,
       category,
-      deadline,
+      topic,
+      registrationOpen,
+      registrationClose,
+      eventDate,
       registrationLink,
+      organizer,
+      prize,
+      location,
       createdBy: adminId,
     });
 
     await newComp.save();
 
     res.status(201).json({
-      message: "competition successfully created",
+      message: "Competition successfully created",
       competition: newComp,
     });
   } catch (error) {
-    console.log("error in adding new comp: ", error);
-    res.status(500).json({ message: "error in created new Competition" });
+    console.error("Error adding new competition:", error);
+    res.status(500).json({ message: "Failed to create new competition" });
   }
 };
 

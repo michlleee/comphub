@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import api from "@/api/axios";
-import { AxiosError } from "axios";
-import { toast } from "sonner";
+import SavedComps from "./SavedComps";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { User, Trophy, Calendar } from "lucide-react";
 
 export function ProfileSection() {
   const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -14,6 +16,7 @@ export function ProfileSection() {
     role: "",
     savedCompetitions: [],
   });
+
   const fetchUserProfile = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
@@ -63,43 +66,57 @@ export function ProfileSection() {
 
     loadProfileAndSaved();
   }, []);
-  return (
-    <>
-      <div>
-        <h1>Welcome back {userData.username}</h1>
 
-        {userData.savedCompetitions.length === 0 ? (
-          <h1>You have no saved competitions :c</h1>
-        ) : (
-          <div>
-            <h2>Your saved competitions</h2>
-            <ul className="space-y-2">
-              {userData.savedCompetitions.map((comp: any, idx: number) => (
-                <li
-                  key={comp?._id ?? `temp-${idx}`}
-                  className="p-3 border rounded-md shadow-sm hover:bg-gray-900"
-                >
-                  <h3 className="font-semibold">{comp?.title}</h3>
-                  <p>
-                    Deadline:{" "}
-                    {comp?.deadline
-                      ? new Date(comp.deadline).toLocaleDateString()
-                      : "TBD"}
-                  </p>
-                  {comp?.slug && (
-                    <a
-                      href={`/competitions/${comp.slug}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      View Competition
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
+  return (
+    <div className="space-y-8">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent" />
+        <div className="relative p-8">
+          <div className="flex items-center gap-6">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/20 border-2 border-primary/30">
+              <User className="h-10 w-10 text-primary" />
+            </div>
+            <div className="space-y-2">
+              <h1 className="text-4xl font-bold text-white">
+                Welcome back, {userData.username || "User"}
+              </h1>
+              <div className="flex items-center gap-4">
+                <p className="text-gray-400">{userData.email}</p>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </div>
-    </>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-400">
+              Saved Competitions
+            </CardTitle>
+            <Trophy className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-white">
+              {userData.savedCompetitions.length}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-400">
+              Active Status
+            </CardTitle>
+            <Calendar className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-400">Online</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <SavedComps />
+    </div>
   );
 }

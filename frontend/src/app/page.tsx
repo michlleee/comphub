@@ -68,7 +68,8 @@ export default function LandingPage() {
               className="bg-teal-500 text-white hover:bg-teal-600 px-8 py-3"
             >
               <Trophy className="w-5 h-5 mr-2" />
-              Find Competitions
+
+              <Link href="/login">Find Competitions</Link>
             </Button>
           </div>
         </div>
@@ -143,7 +144,7 @@ export default function LandingPage() {
             size="lg"
             className="bg-teal-500 text-white hover:bg-teal-600 px-12 py-4 text-lg"
           >
-            Get Started Today
+            <Link href="/signup">Get Started Today</Link>
           </Button>
         </div>
       </section>
