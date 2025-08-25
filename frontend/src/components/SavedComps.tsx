@@ -105,7 +105,9 @@ export default function SavedComps() {
                           className="bg-primary/10 border-primary/30 text-primary hover:bg-primary/20"
                         >
                           <a
-                            href={`/competitions/${comp.slug}`}
+                            href={`/competitions/${comp.category.toLowerCase()}/${
+                              comp.slug
+                            }`}
                             className="flex items-center gap-2"
                           >
                             View

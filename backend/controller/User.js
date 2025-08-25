@@ -88,7 +88,7 @@ export const getAllSavedComp = async (req, res) => {
       .select("_id username savedCompetitions")
       .populate(
         "savedCompetitions",
-        "_id title slug registrationOpen registrationClose"
+        "_id title category slug registrationOpen registrationClose"
       );
 
     if (!result) {
@@ -99,6 +99,7 @@ export const getAllSavedComp = async (req, res) => {
     const savedCompetitions = result.savedCompetitions.map((comp) => ({
       _id: comp._id.toString(),
       title: comp.title,
+      category: comp.category,
       slug: comp.slug,
       regisOpen: comp.registrationOpen,
       regisClose: comp.registrationClose,

@@ -2,7 +2,10 @@ import CompData from "./CompData";
 import type { Metadata } from "next";
 
 interface DetailsPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{
+    category: string;
+    slug: string;
+  }>;
 }
 
 function formatSlug(slug: string) {
@@ -15,7 +18,7 @@ function formatSlug(slug: string) {
 export async function generateMetadata({
   params,
 }: DetailsPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { category, slug } = await params;
   const formattedTitle = formatSlug(slug);
   return {
     title: `${formattedTitle} - CompHub`,
@@ -23,7 +26,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${formattedTitle} - CompHub`,
       description: `Details for competition ${formattedTitle}. Stay updated and track your registrations.`,
-      url: `http://localhost:3000/competition/${slug}`,
+      url: `http://localhost:3000/competitions/${category}/${slug}`,
       siteName: "CompHub",
       images: [
         {
@@ -45,7 +48,6 @@ export async function generateMetadata({
 }
 
 export default async function DetailsPage({ params }: DetailsPageProps) {
-  const { slug } = await params;
-
+  const { category, slug } = await params;
   return <CompData slug={slug} />;
 }

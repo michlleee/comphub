@@ -14,6 +14,7 @@ type Competition = {
 export default function CompetitionsPage() {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
   const [search, setSearch] = useState("");
+  const [mounted, setMounted] = useState(false);
   const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   async function getAllCompetitions() {
@@ -34,6 +35,12 @@ export default function CompetitionsPage() {
   useEffect(() => {
     getAllCompetitions();
   }, []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const filtered = competitions.filter((comp: Competition) =>
     comp.title.toLowerCase().includes(search.toLowerCase())
