@@ -1,3 +1,5 @@
+import { FindMoreBtn } from "@/components/FindMoreBtn";
+import { FloatingActionMenu } from "@/components/FloatingActionMenu";
 import { ProfileSection } from "@/components/ProfileSection";
 import type { Metadata } from "next";
 
@@ -35,7 +37,9 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-6 py-8">
         <ProfileSection />
+        <FindMoreBtn />
       </div>
+      <FloatingActionMenu />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import CompData from "./CompData";
 import type { Metadata } from "next";
 
-interface CompetitionPageProps {
+interface DetailsPageProps {
   params: Promise<{ slug: string }>;
 }
 
@@ -14,7 +14,7 @@ function formatSlug(slug: string) {
 
 export async function generateMetadata({
   params,
-}: CompetitionPageProps): Promise<Metadata> {
+}: DetailsPageProps): Promise<Metadata> {
   const { slug } = await params;
   const formattedTitle = formatSlug(slug);
   return {
@@ -44,9 +44,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function CompetitionPage({
-  params,
-}: CompetitionPageProps) {
+export default async function DetailsPage({ params }: DetailsPageProps) {
   const { slug } = await params;
 
   return <CompData slug={slug} />;
