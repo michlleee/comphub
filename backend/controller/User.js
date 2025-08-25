@@ -48,28 +48,29 @@ export const removeSavedComp = async (req, res) => {
     if (!exist)
       return res.status(404).json({ message: "competition does not exist" });
 
-    const user = await User.findById(userId);
-    if (!user) return res.status(401).json({ message: "user not found" });
+    const existInArray = await User.findOne({
+      _id: userId,
+      savedCompetitions: { $in: [exist._id] },
+    });
 
-    if (!user.savedCompetitions.includes(exist._id.toString())) {
+    if (!existInArray)
       return res
         .status(400)
-        .json({ message: "competition not in saved collection" });
-    }
+        .json({ message: "competition does not exist in saved collection" });
 
-    user.savedCompetitions = user.savedCompetitions.filter(
-      (id) => id !== exist._id.toString()
+    const result = await User.findByIdAndUpdate(
+      { _id: userId },
+      { $pull: { savedCompetitions: exist._id } },
+      { new: true }
     );
-
-    await user.save();
 
     res.status(200).json({
       message: "Successfully removed competition from saved collection",
       updatedUser: {
-        _id: user._id,
-        username: user.username,
-        role: user.role,
-        savedCompetitions: user.savedCompetitions,
+        _id: result._id,
+        username: result.username,
+        role: result.role,
+        savedCompetitions: result.savedCompetitions,
       },
     });
   } catch (error) {
