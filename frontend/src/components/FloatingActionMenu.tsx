@@ -2,29 +2,42 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, X, LogOut, User, Settings, Trophy } from "lucide-react";
+import { Menu, X, LogOut, Trophy } from "lucide-react";
+import { toast } from "sonner";
+import api from "@/api/axios";
 
 export function FloatingActionMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const handleLogout = () => {
-    console.log("Logging out...");
-    router.push("/login");
+  const handleLogout = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const { data } = await api.post(
+        `${backendURL}/api/auth/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      toast.success(data.message);
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("Fail to log out. Please try again");
+    }
   };
 
   const handleExploreCompetitions = () => {
     router.push("/competitions");
-  };
-
-  const handleProfile = () => {
-    router.push("/profile");
-  };
-
-  const handleSettings = () => {
-    router.push("/settings");
   };
 
   const menuItems = [
