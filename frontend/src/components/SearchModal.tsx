@@ -3,13 +3,8 @@ import { useState, useEffect } from "react";
 import api from "@/api/axios";
 import Link from "next/link";
 import { Search, X, ArrowRight } from "lucide-react";
-
-type Competition = {
-  title: string;
-  slug: string;
-  category: string;
-  description?: string;
-};
+import type { Competition } from "@/app/competitions/AllCompetitions";
+import CompetitionCard from "./CompetitionCard";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -123,31 +118,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <div className="px-6 pb-6">
               <div className="space-y-3">
                 {results.map((comp) => (
-                  <Link
-                    key={comp.slug}
-                    href={`/competitions/${comp.category}/${comp.slug}`}
-                    onClick={onClose}
-                    className="block p-4 bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-teal-500 rounded-xl transition-all duration-200 group"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="bg-teal-500/10 text-teal-400 px-2 py-1 rounded-md text-xs font-medium">
-                            {comp.category}
-                          </span>
-                        </div>
-                        <h3 className="font-semibold text-white group-hover:text-teal-400 transition-colors mb-1">
-                          {comp.title}
-                        </h3>
-                        {comp.description && (
-                          <p className="text-slate-400 text-sm line-clamp-2">
-                            {comp.description}
-                          </p>
-                        )}
-                      </div>
-                      <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-teal-400 group-hover:translate-x-1 transition-all flex-shrink-0 ml-4" />
-                    </div>
-                  </Link>
+                  <CompetitionCard key={comp.slug} competition={comp} />
                 ))}
               </div>
 

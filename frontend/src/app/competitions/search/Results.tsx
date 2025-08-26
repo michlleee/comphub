@@ -5,13 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import api from "@/api/axios";
 import { Search, ArrowLeft } from "lucide-react";
-
-type Competition = {
-  title: string;
-  slug: string;
-  category: string;
-  description?: string;
-};
+import CompetitionCard from "@/components/CompetitionCard";
+import type { Competition } from "../AllCompetitions";
 
 export default function Results() {
   const searchParams = useSearchParams();
@@ -114,61 +109,7 @@ export default function Results() {
 
             <div className="space-y-6">
               {results.map((comp) => (
-                <Link
-                  key={comp.slug}
-                  href={`/competitions/${comp.category}/${comp.slug}`}
-                  className="group block"
-                >
-                  <div className="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-teal-500 rounded-2xl p-8 transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/10">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="bg-teal-500/10 text-teal-400 px-4 py-2 rounded-full text-sm font-medium">
-                        {comp.category}
-                      </div>
-                      <div className="text-slate-400 group-hover:text-teal-400 transition-colors">
-                        <svg
-                          className="w-6 h-6 group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-
-                    <h3 className="text-2xl font-bold mb-4 group-hover:text-teal-400 transition-colors">
-                      {comp.title}
-                    </h3>
-
-                    {comp.description && (
-                      <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                        {comp.description}
-                      </p>
-                    )}
-
-                    <div className="flex items-center text-teal-400 font-medium">
-                      View Competition Details
-                      <svg
-                        className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </Link>
+                <CompetitionCard key={comp.slug} competition={comp} />
               ))}
             </div>
           </>

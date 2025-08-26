@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import SearchModal from "@/components/SearchModal";
+import CompetitionCard from "@/components/CompetitionCard";
 import api from "@/api/axios";
 import { Search } from "lucide-react";
 
-type Competition = {
+export type Competition = {
   title: string;
+  topic: string;
   slug: string;
   category: string;
-  description?: string;
+  shortDesc?: string;
+  location: string;
+  registrationOpen: Date;
+  registrationClose: Date;
 };
 
 export default function AllCompetitions() {
@@ -64,7 +68,7 @@ export default function AllCompetitions() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-screen-2xl mx-auto px-6 py-12">
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2">All Competitions</h2>
           <p className="text-slate-400">
@@ -79,48 +83,7 @@ export default function AllCompetitions() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {competitions.map((comp: Competition) => (
-              <Link
-                key={comp.slug}
-                href={`/competitions/${comp.category.toLowerCase()}/${
-                  comp.slug
-                }`}
-                className="group"
-              >
-                <div className="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-teal-500 rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:shadow-teal-500/10">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="bg-teal-500/10 text-teal-400 px-3 py-1 rounded-full text-sm font-medium">
-                      {comp.category}
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-teal-400 transition-colors">
-                    {comp.title}
-                  </h3>
-
-                  {comp.description && (
-                    <p className="text-slate-400 text-sm line-clamp-3 mb-4">
-                      {comp.description}
-                    </p>
-                  )}
-
-                  <div className="flex items-center text-teal-400 text-sm font-medium">
-                    View Details
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
+              <CompetitionCard key={comp.slug} competition={comp} />
             ))}
           </div>
         )}
