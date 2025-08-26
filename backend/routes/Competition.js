@@ -4,6 +4,7 @@ import {
   deleteCompetition,
   getAllCompetitions,
   getSingleCompetition,
+  searchCompetition,
 } from "../controller/Competition.js";
 import { authMiddleware } from "../middleware/Auth.js";
 import { authorizedRolesMiddleware } from "../middleware/AuthorizedRoles.js";
@@ -16,6 +17,8 @@ router.post(
   authorizedRolesMiddleware("admin"),
   addCompetition
 );
+
+router.get("/search", authMiddleware, searchCompetition);
 
 router.get("/all", authMiddleware, getAllCompetitions);
 

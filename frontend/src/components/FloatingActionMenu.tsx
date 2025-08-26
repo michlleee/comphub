@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, X, LogOut, Trophy } from "lucide-react";
+import { Menu, X, LogOut, Trophy, LaptopMinimal } from "lucide-react";
 import { toast } from "sonner";
 import api from "@/api/axios";
 
@@ -36,6 +36,10 @@ export function FloatingActionMenu() {
     }
   };
 
+  const handleDashboard = () => {
+    router.push("/dashboard");
+  };
+
   const handleExploreCompetitions = () => {
     router.push("/competitions");
   };
@@ -47,12 +51,12 @@ export function FloatingActionMenu() {
       onClick: handleExploreCompetitions,
       color: "from-slate-600 to-blue-500",
     },
-    // {
-    //   icon: User,
-    //   label: "Profile",
-    //   onClick: handleProfile,
-    //   color: "from-slate-600 to-emerald-500",
-    // },
+    {
+      icon: LaptopMinimal,
+      label: "Dashboard",
+      onClick: handleDashboard,
+      color: "from-slate-600 to-emerald-500",
+    },
     {
       icon: LogOut,
       label: "Logout",
@@ -62,9 +66,9 @@ export function FloatingActionMenu() {
   ];
 
   return (
-    <div className="fixed bottom-6 left-6 z-50">
+    <div className="fixed top-6 left-6 z-50">
       <div
-        className={`absolute bottom-16 left-0 space-y-3 transition-all duration-300 ${
+        className={`absolute top-16 left-0 space-y-3 transition-all duration-300 ${
           isOpen
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-4 pointer-events-none"

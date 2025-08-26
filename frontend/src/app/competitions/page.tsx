@@ -1,5 +1,13 @@
+import { FloatingActionMenu } from "@/components/FloatingActionMenu";
 import AllCompetitions from "./AllCompetitions";
 
 export default function CompetitionsPage() {
-  return <AllCompetitions />;
+  return (
+    <>
+      <div>
+        <AllCompetitions />
+        <FloatingActionMenu />
+      </div>
+    </>
+  );
 }

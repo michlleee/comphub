@@ -97,3 +97,26 @@ export const deleteCompetition = async (req, res) => {
     res.status(500).json({ message: "error in deleteing competition" });
   }
 };
+
+export const searchCompetition = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    if (!query || query.trim() === "") {
+      return res.status(400).json({ message: "Query is required" });
+    }
+
+    const competitions = await Competition.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    });
+
+    res.status(200).json({ competitionList: competitions });
+  } catch (error) {
+    console.error("searchCompetition error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
