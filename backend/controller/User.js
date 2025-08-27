@@ -14,11 +14,19 @@ export const saveComp = async (req, res) => {
     if (!exist)
       return res.status(404).json({ message: "competition does not exist" });
 
+    const user = await User.findById(userId);
+
+    if (user.savedCompetitions.includes(exist._id)) {
+      return res.status(400).json({ message: "Competition already saved" });
+    }
+
     const result = await User.findByIdAndUpdate(
       { _id: userId },
       { $addToSet: { savedCompetitions: exist._id } },
       { new: true }
     );
+
+    await Competition.findByIdAndUpdate(exist._id, { $inc: { totalSaves: 1 } });
 
     res.status(200).json({
       message: "Successfully saved competition",
@@ -63,6 +71,10 @@ export const removeSavedComp = async (req, res) => {
       { $pull: { savedCompetitions: exist._id } },
       { new: true }
     );
+
+    await Competition.findByIdAndUpdate(exist._id, {
+      $inc: { totalSaves: -1 },
+    });
 
     res.status(200).json({
       message: "Successfully removed competition from saved collection",

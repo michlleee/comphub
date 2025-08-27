@@ -98,6 +98,29 @@ export const getSpecificCompetitions = async (req, res) => {
   }
 };
 
+export const getTotalSaves = async (req, res) => {
+  try {
+    const organizerId = req.user._id;
+    const result = await Competition.aggregate([
+      { $match: { createdBy: organizerId } },
+      { $group: { _id: null, totalSaves: { $sum: "$totalSaves" } } },
+    ]);
+
+    const totalSaves = result[0]?.totalSaves || 0;
+
+    return res.status(200).json({
+      message: "Total saves retrieved successfully",
+      total: totalSaves,
+    });
+  } catch (error) {
+    console.log("error in getting total saves: ", error);
+    return res.status(500).json({
+      message: "Server error while getting total saves",
+      error: error.message,
+    });
+  }
+};
+
 export const deleteCompetition = async (req, res) => {
   try {
     const { slug } = req.params;

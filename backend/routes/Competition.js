@@ -6,6 +6,7 @@ import {
   getAllCompetitions,
   getSingleCompetition,
   getSpecificCompetitions,
+  getTotalSaves,
   searchCompetition,
 } from "../controller/Competition.js";
 import { authMiddleware } from "../middleware/Auth.js";
@@ -32,6 +33,13 @@ router.get(
   authMiddleware,
   authorizedRolesMiddleware("organizer"),
   getSpecificCompetitions
+);
+
+router.get(
+  "/saves",
+  authMiddleware,
+  authorizedRolesMiddleware("organizer"),
+  getTotalSaves
 );
 
 router.get("/search", authMiddleware, searchCompetition);
