@@ -84,8 +84,8 @@ export const getSingleCompetition = async (req, res) => {
 
 export const deleteCompetition = async (req, res) => {
   try {
-    const { id } = req.params;
-    const result = await Competition.deleteOne({ _id: id });
+    const { slug } = req.params;
+    const result = await Competition.deleteOne({ slug });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: "Competition not found" });
@@ -95,6 +95,30 @@ export const deleteCompetition = async (req, res) => {
   } catch (error) {
     console.log("error in deleteing competition: ", error);
     res.status(500).json({ message: "error in deleteing competition" });
+  }
+};
+
+export const editCompetition = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const updates = req.body;
+
+    const updatedComp = await Competition.findOneAndUpdate(
+      { slug },
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedComp)
+      return res.status(404).json({ message: "Competition not found" });
+
+    res.status(200).json({
+      message: "Competition updated successfully",
+      competition: updatedComp,
+    });
+  } catch (error) {
+    console.log("error in edit competition: ", error);
+    res.status(500).json({ message: "error in editing competition" });
   }
 };
 

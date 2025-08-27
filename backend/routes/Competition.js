@@ -2,6 +2,7 @@ import express from "express";
 import {
   addCompetition,
   deleteCompetition,
+  editCompetition,
   getAllCompetitions,
   getSingleCompetition,
   searchCompetition,
@@ -14,8 +15,15 @@ const router = express.Router();
 router.post(
   "/add",
   authMiddleware,
-  authorizedRolesMiddleware("admin"),
+  authorizedRolesMiddleware("admin", "organizer"),
   addCompetition
+);
+
+router.patch(
+  "/edit",
+  authMiddleware,
+  authorizedRolesMiddleware("admin", "organizer"),
+  editCompetition
 );
 
 router.get("/search", authMiddleware, searchCompetition);
@@ -25,9 +33,9 @@ router.get("/all", authMiddleware, getAllCompetitions);
 router.get("/:slug", authMiddleware, getSingleCompetition);
 
 router.delete(
-  "/:id",
+  "/:slug",
   authMiddleware,
-  authorizedRolesMiddleware("admin"),
+  authorizedRolesMiddleware("admin", "organizer"),
   deleteCompetition
 );
 
