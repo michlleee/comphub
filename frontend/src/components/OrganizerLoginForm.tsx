@@ -34,7 +34,7 @@ export function OrganizerLoginForm() {
 
       toast.success("Login successful! Redirecting...");
 
-      if (data.user.verified) {
+      if (data.user.status === "verified") {
         router.push("/dashboard-organizer");
       } else {
         router.push("/verification");

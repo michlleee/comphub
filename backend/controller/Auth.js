@@ -44,7 +44,6 @@ export const registerUser = async (req, res) => {
     if (role === "organizer") {
       userData.organizationName = organizationName;
       userData.contactInfo = contactInfo;
-      userData.verified = false;
     }
 
     const newUser = new User(userData);
@@ -85,11 +84,19 @@ export const userLogin = async (req, res) => {
     if (!existingUser)
       return res.status(400).json({ message: "User not found" });
 
-    if (existingUser.role === "organizer" && !existingUser.verified) {
-      return res
-        .status(403)
-        .json({ message: "Organizer account not yet verified" });
+    if (existingUser.role === "organizer") {
+      if (existingUser.status === "pending") {
+        return res
+          .status(403)
+          .json({ message: "Organizer account not yet verified" });
+      }
+      if (existingUser.status === "rejected") {
+        return res
+          .status(403)
+          .json({ message: "Organizer account was rejected" });
+      }
     }
+
     const match = await bcrypt.compare(password, existingUser.password);
     if (!match) return res.status(400).json({ message: "invalid credentials" });
 

@@ -3,8 +3,9 @@ import express from "express";
 import { authMiddleware } from "../middleware/Auth.js";
 import { authorizedRolesMiddleware } from "../middleware/AuthorizedRoles.js";
 import {
+  approveOrganizerStatus,
   getPendingOrganizers,
-  updateOrganizerStatus,
+  rejectOrganizerStatus,
 } from "../controller/Admin.js";
 
 const router = express.Router();
@@ -17,10 +18,17 @@ router.get(
 );
 
 router.patch(
-  "/organizers/:id/verify",
+  "/organizers/:id/approve",
   authMiddleware,
   authorizedRolesMiddleware("admin"),
-  updateOrganizerStatus
+  approveOrganizerStatus
+);
+
+router.patch(
+  "/organizers/:id/reject",
+  authMiddleware,
+  authorizedRolesMiddleware("admin"),
+  rejectOrganizerStatus
 );
 
 export default router;

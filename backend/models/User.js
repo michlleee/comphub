@@ -17,7 +17,11 @@ const userSchema = new mongoose.Schema(
     //organizer only feilds
     organizationName: { type: String },
     contactInfo: { type: String },
-    verified: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["pending", "verified", "rejected"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );
