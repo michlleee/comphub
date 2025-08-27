@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/Auth.js";
 import competitionRouter from "./routes/Competition.js";
 import userRouter from "./routes/User.js";
+import adminRouter from "./routes/Admin.js";
 dotenv.config();
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(
 app.use("/api/auth", authRouter);
 app.use("/api/competition", competitionRouter);
 app.use("/api/users", userRouter);
+app.use("/api/admin", adminRouter);
 
 const startServer = async () => {
   try {

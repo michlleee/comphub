@@ -25,19 +25,29 @@ const generateTokens = (user) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { username, email, password, role, organizationName, contactInfo } =
+      req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
     const hashPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new User({
-      username: username,
-      email: email,
+
+    const userData = {
+      username,
+      email,
       password: hashPassword,
       role: role || "user",
-    });
+    };
+
+    if (role === "organizer") {
+      userData.organizationName = organizationName;
+      userData.contactInfo = contactInfo;
+      userData.verified = false;
+    }
+
+    const newUser = new User(userData);
     await newUser.save();
 
     const { accessToken, refreshToken } = generateTokens(newUser);
@@ -55,12 +65,12 @@ export const registerUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
-    const { password: _, ...userData } = newUser._doc;
+    const { password: _, ...userDataResponse } = newUser._doc;
 
     return res.status(201).json({
-      message: "User succesfully registered",
+      message: "User successfully registered",
       accessToken,
-      user: userData,
+      user: userDataResponse,
     });
   } catch (error) {
     console.log("error in registering user: ", error);
@@ -75,12 +85,16 @@ export const userLogin = async (req, res) => {
     if (!existingUser)
       return res.status(400).json({ message: "User not found" });
 
+    if (existingUser.role === "organizer" && !existingUser.verified) {
+      return res
+        .status(403)
+        .json({ message: "Organizer account not yet verified" });
+    }
     const match = await bcrypt.compare(password, existingUser.password);
     if (!match) return res.status(400).json({ message: "invalid credentials" });
 
     const { accessToken, refreshToken } = generateTokens(existingUser);
 
-    //check if refresh token already is in database
     let storedToken = await RefreshToken.findOne({ userId: existingUser._id });
     if (storedToken) {
       storedToken.token = refreshToken;

@@ -39,9 +39,11 @@ export function LoginForm() {
 
       toast.success("Login successful! Redirecting...");
 
-      setTimeout(() => {
+      if (data.user.role === "admin") {
+        router.push("/dashboard-admin");
+      } else {
         router.push("/dashboard");
-      }, 1500);
+      }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       const errorMsg =

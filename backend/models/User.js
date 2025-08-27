@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema(
     savedCompetitions: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Competition" },
     ],
+
+    //organizer only feilds
+    organizationName: { type: String },
+    contactInfo: { type: String },
+    verified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

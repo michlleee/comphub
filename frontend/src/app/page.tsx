@@ -10,6 +10,7 @@ import { Code, Trophy, Bookmark, Calendar } from "lucide-react";
 import Image from "next/image";
 import Footer from "@/components/ui/Footer";
 import Link from "next/link";
+import OrganizerSection from "@/components/OrganizerSection";
 
 export default function LandingPage() {
   return (
@@ -129,6 +130,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <OrganizerSection />
 
       <section className="py-20 px-4 bg-gradient-to-r from-slate-900 via-slate-800 to-teal-900/30">
         <div className="container mx-auto text-center">
