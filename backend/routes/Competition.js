@@ -5,6 +5,7 @@ import {
   editCompetition,
   getAllCompetitions,
   getSingleCompetition,
+  getSpecificCompetitions,
   searchCompetition,
 } from "../controller/Competition.js";
 import { authMiddleware } from "../middleware/Auth.js";
@@ -20,10 +21,17 @@ router.post(
 );
 
 router.patch(
-  "/edit",
+  "/edit/:slug",
   authMiddleware,
   authorizedRolesMiddleware("admin", "organizer"),
   editCompetition
+);
+
+router.get(
+  "/mine",
+  authMiddleware,
+  authorizedRolesMiddleware("organizer"),
+  getSpecificCompetitions
 );
 
 router.get("/search", authMiddleware, searchCompetition);

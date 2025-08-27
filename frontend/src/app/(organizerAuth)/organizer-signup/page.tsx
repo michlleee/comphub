@@ -8,13 +8,13 @@ export default function OrganizerSignupPage() {
       <div className="w-full max-w-6xl grid lg:grid-cols-[1fr_auto_1fr] items-center gap-20">
         <div className="lg:col-span-1 space-y-6 text-white">
           <h1 className="text-5xl font-bold">
-            Host Your Own <br />
-            <span className="text-orange-400">Competition Hub</span>
+            Share Your <br />
+            <span className="text-orange-400">Competitions</span>
           </h1>
           <p className="text-gray-300 text-lg max-w-md">
-            Create, manage, and host programming competitions. Reach thousands
-            of developers and build your community. Never miss an opportunity to
-            showcase talent again.
+            List your programming competition in our hub and let developers from
+            around the world discover it. Promote your event, grow
+            participation, and make sure no great challenge goes unnoticed.
           </p>
         </div>
 

@@ -18,8 +18,7 @@ export const addCompetition = async (req, res) => {
       location,
     } = req.body;
 
-    const adminId = req.user._id;
-
+    const creatorId = req.user._id;
     const slug = slugify(title, { lower: true, strict: true });
 
     const newComp = new Competition({
@@ -36,7 +35,7 @@ export const addCompetition = async (req, res) => {
       organizer,
       prize,
       location,
-      createdBy: adminId,
+      createdBy: creatorId,
     });
 
     await newComp.save();
@@ -79,6 +78,23 @@ export const getSingleCompetition = async (req, res) => {
   } catch (error) {
     console.log("error ini getting competition by slug: ", error);
     res.status(500).json({ message: "error in fetching competition" });
+  }
+};
+
+export const getSpecificCompetitions = async (req, res) => {
+  try {
+    const organizerId = req.user._id;
+    const competitions = await Competition.find({ createdBy: organizerId });
+
+    return res.status(200).json({
+      message: "Competitions retrieved successfully",
+      competitionList: competitions,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error while fetching competitions",
+      error: error.message,
+    });
   }
 };
 

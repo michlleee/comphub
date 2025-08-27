@@ -28,17 +28,36 @@ type Competition = {
   organizer: string;
   prize: string;
   location: string;
+  createdBy: string;
 };
 
 export default function CompData({ slug }: { slug: string }) {
   const [competition, setCompetition] = useState<Competition | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) return;
+
+      try {
+        const { data } = await api.get(`${backendURL}/api/auth/profile`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        setUserRole(data.user.role);
+        setUserId(data.user._id);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchUser();
+  }, [backendURL]);
 
   async function getCompetition(slug: string) {
-    const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
     try {
       const accessToken = localStorage.getItem("accessToken");
-
       const { data } = await api.get(`${backendURL}/api/competition/${slug}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -119,10 +138,12 @@ export default function CompData({ slug }: { slug: string }) {
               Register Now
             </a>
 
-            <SaveBtn
-              comp={{ _id: competition._id, slug: competition.slug }}
-              isSaved={false}
-            />
+            {userRole !== "organizer" && competition.createdBy !== userId && (
+              <SaveBtn
+                comp={{ _id: competition._id, slug: competition.slug }}
+                isSaved={false}
+              />
+            )}
           </div>
         </div>
       </div>

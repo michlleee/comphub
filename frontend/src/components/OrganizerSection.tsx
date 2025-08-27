@@ -14,12 +14,12 @@ export default function OrganizerSection() {
               For Competition Organizers
             </Badge>
             <h2 className="text-4xl font-bold mb-4 text-white">
-              Host Your Own <span className="text-orange-400">Competition</span>
+              Add Your <span className="text-orange-400">Competition</span>
             </h2>
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Ready to create the next big programming challenge? Join our
-              community of organizers and reach thousands of talented
-              developers.
+              Want more people to discover your competition? Submit it to our
+              platform and get promoted to a community of developers, students,
+              and professionals looking for their next challenge.
             </p>
           </div>
 
@@ -29,10 +29,13 @@ export default function OrganizerSection() {
                 <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4">
                   <Users className="w-6 h-6 text-orange-400" />
                 </div>
-                <CardTitle className="text-white">Reach Thousands</CardTitle>
+                <CardTitle className="text-white">
+                  Reach More Participants
+                </CardTitle>
                 <CardDescription className="text-slate-300">
-                  Connect with our growing community of developers, students,
-                  and professionals looking for their next challenge.
+                  Get your competition in front of thousands of developers,
+                  students, and professionals actively searching for events to
+                  join.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -42,10 +45,10 @@ export default function OrganizerSection() {
                 <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4">
                   <Megaphone className="w-6 h-6 text-orange-400" />
                 </div>
-                <CardTitle className="text-white">Easy Management</CardTitle>
+                <CardTitle className="text-white">Promote Your Event</CardTitle>
                 <CardDescription className="text-slate-300">
-                  Use our intuitive dashboard to manage registrations,
-                  communicate with participants, and track competition progress.
+                  Listing is simple—just add your competition details, and our
+                  platform helps highlight and promote it to the right audience.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -56,10 +59,10 @@ export default function OrganizerSection() {
               size="lg"
               className="bg-orange-500 text-white hover:bg-orange-600 px-12 py-4 text-lg"
             >
-              <Link href="/organizer-signup">Become an Organizer</Link>
+              <Link href="/organizer-signup">Submit Your Competition</Link>
             </Button>
             <p className="text-sm text-slate-400 mt-4">
-              Already an organizer?{" "}
+              Already submitted a competition?{" "}
               <Link
                 href="/organizer-login"
                 className="text-orange-400 hover:text-orange-300"
