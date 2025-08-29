@@ -123,8 +123,8 @@ export const getTotalSaves = async (req, res) => {
 
 export const deleteCompetition = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const result = await Competition.deleteOne({ slug });
+    const { id } = req.params;
+    const result = await Competition.deleteOne({ _id: id });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: "Competition not found" });
@@ -139,11 +139,11 @@ export const deleteCompetition = async (req, res) => {
 
 export const editCompetition = async (req, res) => {
   try {
-    const { slug } = req.params;
+    const { id } = req.params;
     const updates = req.body;
 
     const updatedComp = await Competition.findOneAndUpdate(
-      { slug },
+      { _id: id },
       { $set: updates },
       { new: true, runValidators: true }
     );

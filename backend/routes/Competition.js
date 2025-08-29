@@ -22,7 +22,7 @@ router.post(
 );
 
 router.patch(
-  "/edit/:slug",
+  "/edit/:id",
   authMiddleware,
   authorizedRolesMiddleware("admin", "organizer"),
   editCompetition
@@ -49,7 +49,7 @@ router.get("/all", authMiddleware, getAllCompetitions);
 router.get("/:slug", authMiddleware, getSingleCompetition);
 
 router.delete(
-  "/:slug",
+  "/:id",
   authMiddleware,
   authorizedRolesMiddleware("admin", "organizer"),
   deleteCompetition

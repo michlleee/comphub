@@ -10,6 +10,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Calendar,
   MapPin,
   Trophy,
@@ -17,20 +27,47 @@ import {
   Eye,
   Inbox,
   Globe,
+  Trash2,
 } from "lucide-react";
-import type { Competition } from "./OrganizerContainer";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { EditCompetitionModal } from "./EditCompetitionModal";
+
+type Competition = {
+  _id: string;
+  title: string;
+  slug: string;
+  shortDesc?: string;
+  description?: string;
+  category?: string;
+  topic?: string;
+  registrationOpen: Date;
+  registrationClose: Date;
+  registrationLink: string;
+  eventDate?: Date;
+  organizer?: string;
+  prize?: string;
+  location?: string;
+};
 
 interface HostedCompetitionProps {
   loading: boolean;
   competitions: Competition[];
+  onUpdateCompetition?: (id: string, updatedData: Partial<Competition>) => void;
+  onDeleteCompetition?: (id: string) => void;
 }
 
 export function HostedCompetition({
   loading,
   competitions,
+  onUpdateCompetition,
+  onDeleteCompetition,
 }: HostedCompetitionProps) {
   const router = useRouter();
+  const [editingCompetition, setEditingCompetition] =
+    useState<Competition | null>(null);
+  const [deleteCompetition, setDeleteCompetition] =
+    useState<Competition | null>(null);
 
   const getRegistrationStatus = (competition: Competition) => {
     const now = new Date();
@@ -55,8 +92,19 @@ export function HostedCompetition({
     }
   };
 
-  const handleEdit = () => {
-    console.log("edit bro");
+  const handleEdit = (competition: Competition) => {
+    setEditingCompetition(competition);
+  };
+
+  const handleDelete = (competition: Competition) => {
+    setDeleteCompetition(competition);
+  };
+
+  const confirmDelete = () => {
+    if (deleteCompetition && onDeleteCompetition) {
+      onDeleteCompetition(deleteCompetition._id);
+    }
+    setDeleteCompetition(null);
   };
 
   if (loading) {
@@ -77,92 +125,140 @@ export function HostedCompetition({
   }
 
   return (
-    <div className="space-y-4">
-      {competitions.map((competition) => {
-        const regStatus = getRegistrationStatus(competition);
+    <>
+      <div className="space-y-4">
+        {competitions.map((competition) => {
+          const regStatus = getRegistrationStatus(competition);
 
-        return (
-          <Card key={competition._id} className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-white text-lg">
-                    {competition.title}
-                  </CardTitle>
-                  <CardDescription className="text-gray-400 mt-1">
-                    {competition.shortDesc}
-                  </CardDescription>
-                </div>
-                <Badge className={getStatusColor(regStatus.status)}>
-                  {regStatus.text}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <Trophy className="h-4 w-4" />
-                  <span>{competition.prize ?? "TBD"}</span>
-                </div>
-                {competition.eventDate && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Calendar className="h-4 w-4" />
-                    <span>
-                      {new Date(competition.eventDate).toLocaleDateString()}
-                    </span>
+          return (
+            <Card key={competition._id} className="bg-gray-900 border-gray-800">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-white text-lg">
+                      {competition.title}
+                    </CardTitle>
+                    <CardDescription className="text-gray-400 mt-1">
+                      {competition.shortDesc}
+                    </CardDescription>
                   </div>
-                )}
-                {competition.location && (
+                  <Badge className={getStatusColor(regStatus.status)}>
+                    {regStatus.text}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <MapPin className="h-4 w-4" />
-                    <span>{competition.location}</span>
+                    <Trophy className="h-4 w-4" />
+                    <span>{competition.prize ?? "TBD"}</span>
                   </div>
-                )}
-              </div>
+                  {competition.eventDate && (
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <Calendar className="h-4 w-4" />
+                      <span>
+                        {new Date(competition.eventDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )}
+                  {competition.location && (
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <MapPin className="h-4 w-4" />
+                      <span>{competition.location}</span>
+                    </div>
+                  )}
+                </div>
 
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="border-gray-700 text-gray-300 hover:bg-gray-800 bg-transparent"
-                  onClick={() =>
-                    window.open(competition.registrationLink, "_blank")
-                  }
-                >
-                  <Globe className="h-4 w-4 mr-1" />
-                  Competition Link
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-700 text-gray-300 hover:bg-gray-800 bg-transparent"
+                    onClick={() =>
+                      window.open(competition.registrationLink, "_blank")
+                    }
+                  >
+                    <Globe className="h-4 w-4 mr-1" />
+                    Competition Link
+                  </Button>
 
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="border-orange-400 text-orange-400 hover:bg-orange-400/10 bg-transparent"
-                  onClick={handleEdit}
-                >
-                  <Edit className="h-4 w-4 mr-1" />
-                  Edit
-                </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-orange-400 text-orange-400 hover:bg-orange-400/10 bg-transparent"
+                    onClick={() => handleEdit(competition)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Edit
+                  </Button>
 
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="border-blue-400 text-blue-400 hover:bg-blue-400/10 bg-transparent"
-                  onClick={() =>
-                    router.push(
-                      `/competitions/${competition.category?.toLowerCase()}/${
-                        competition.slug
-                      }`
-                    )
-                  }
-                >
-                  <Eye className="h-4 w-4 mr-1" />
-                  Preview
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-blue-400 text-blue-400 hover:bg-blue-400/10 bg-transparent"
+                    onClick={() =>
+                      router.push(
+                        `/competitions/${competition.category?.toLowerCase()}/${
+                          competition.slug
+                        }`
+                      )
+                    }
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    Preview
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-red-400 text-red-400 hover:bg-red-400/10 bg-transparent"
+                    onClick={() => handleDelete(competition)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    Delete
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <EditCompetitionModal
+        competition={editingCompetition}
+        isOpen={!!editingCompetition}
+        onClose={() => setEditingCompetition(null)}
+        onSave={onUpdateCompetition || (() => {})}
+      />
+
+      <AlertDialog
+        open={!!deleteCompetition}
+        onOpenChange={() => setDeleteCompetition(null)}
+      >
+        <AlertDialogContent className="bg-gray-900 border-gray-800 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-red-400">
+              Delete Competition
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-400">
+              Are you sure you want to delete "{deleteCompetition?.title}"? This
+              action cannot be undone and will permanently remove the
+              competition and all associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-gray-700 text-gray-300 hover:bg-gray-800">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Delete Competition
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

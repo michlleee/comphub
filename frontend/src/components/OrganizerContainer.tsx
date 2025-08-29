@@ -7,7 +7,8 @@ import { HostedCompetition } from "@/components/HostedCompetition";
 import api from "@/api/axios";
 import { useEffect, useState } from "react";
 import { FloatingActionMenuOrganizer } from "./FloatingActionMenuOrganizer";
-export type Competition = {
+import { toast } from "sonner";
+type Competition = {
   _id: string;
   title: string;
   slug: string;
@@ -15,10 +16,10 @@ export type Competition = {
   description?: string;
   category?: string;
   topic?: string;
-  registrationOpen: string;
-  registrationClose: string;
+  registrationOpen: Date;
+  registrationClose: Date;
   registrationLink: string;
-  eventDate?: string;
+  eventDate?: Date;
   organizer?: string;
   prize?: string;
   location?: string;
@@ -30,6 +31,8 @@ export function OrganizerContainer() {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [totalSaved, setTotalSaved] = useState(0);
+
+  const [lastEdited, setLastEdited] = useState<Competition | null>(null);
 
   const fetchUserData = async () => {
     try {
@@ -72,6 +75,53 @@ export function OrganizerContainer() {
       setTotalSaved(data.total);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleUpdateCompetition = async (
+    id: string,
+    updatedData: Partial<Competition>
+  ) => {
+    try {
+      setCompetitions((prev) =>
+        prev.map((comp) =>
+          comp._id === id ? { ...comp, ...updatedData } : comp
+        )
+      );
+
+      const accessToken = localStorage.getItem("accessToken");
+      const { data } = await api.patch(
+        `${backendURL}/api/competition/edit/${id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      toast.success(data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in updating competition");
+    }
+  };
+
+  const handleDeleteCompetition = async (id: string) => {
+    try {
+      setCompetitions((prev) => prev.filter((comp) => comp._id !== id));
+
+      const accessToken = localStorage.getItem("accessToken");
+      const { data } = await api.delete(`${backendURL}/api/competition/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      toast.success(data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in deleting competition");
     }
   };
 
@@ -152,7 +202,12 @@ export function OrganizerContainer() {
             <h2 className="text-xl font-semibold text-white mb-6">
               My Competitions
             </h2>
-            <HostedCompetition loading={loading} competitions={competitions} />
+            <HostedCompetition
+              loading={loading}
+              competitions={competitions}
+              onUpdateCompetition={handleUpdateCompetition}
+              onDeleteCompetition={handleDeleteCompetition}
+            />
           </div>
         </div>
       </div>
