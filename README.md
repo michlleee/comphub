@@ -7,7 +7,9 @@ CompHub is a web platform where users can explore the latest Computer Science–
 - Save and manage favorite competitions  
 - Track upcoming deadlines to never miss an opportunity  
 - User authentication with JWT  
-- SEO optimization with dynamic metadata  
+- SEO optimization with dynamic metadata
+- Admin page to verify/approve organizers
+- Organizer dashboard to add, delete, edit and view competitions they created.
 
 ## Tech Stack  
 **Frontend**  
