@@ -41,7 +41,7 @@ Along with these core features, CompHub offers many more tools and improvements 
   <p align="center">
     <img src="https://github.com/user-attachments/assets/ade3f555-9dde-43f4-bf31-f54506c47364" width="80%">
     <br/>
-    <em>Organizer Dashboard</em>
+    <em>Admin Dashboard</em>
   </p>
 </details>
 
