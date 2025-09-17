@@ -43,6 +43,7 @@ Along with these core features, CompHub offers many more tools and improvements 
     <br/>
     <em>Organizer Dashboard</em>
   </p>
+</details>
 
 ## Features  
 - Browse the latest CS competitions  
