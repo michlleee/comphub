@@ -103,7 +103,7 @@ export function RegisterForm() {
             Sign up to CompHub
           </h2>
 
-          <Button
+          {/* <Button
             variant="outline"
             className="w-full bg-transparent"
             type="button"
@@ -133,7 +133,7 @@ export function RegisterForm() {
             <span className="flex-1 border-b border-gray-300"></span>
             <span className="px-2"> or </span>
             <span className="flex-1 border-b border-gray-300"></span>
-          </div>
+          </div> */}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

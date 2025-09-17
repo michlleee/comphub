@@ -72,7 +72,7 @@ export function LoginForm() {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <Button
+        {/* <Button
           variant="outline"
           className="w-full bg-transparent"
           type="button"
@@ -105,7 +105,7 @@ export function LoginForm() {
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-card px-2 text-muted-foreground">or</span>
           </div>
-        </div>
+        </div> */}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
